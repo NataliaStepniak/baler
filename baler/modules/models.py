@@ -122,8 +122,6 @@ class AE(nn.Module):
     def __init__(self, n_features, z_dim, *args, **kwargs):
         super(AE, self).__init__(*args, **kwargs)
 
-        self = self.float()
-
 
         self.activations = {}
 
@@ -140,6 +138,8 @@ class AE(nn.Module):
 
         self.n_features = n_features
         self.z_dim = z_dim
+
+        self.float()
 
     def encode(self, x):
         h1 = F.leaky_relu(self.en1(x))
