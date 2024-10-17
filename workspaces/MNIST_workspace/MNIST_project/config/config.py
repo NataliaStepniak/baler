@@ -1,5 +1,6 @@
 import csv
 import numpy as np
+import os
 # Read CSV file into a list of rows
 with open('mnist_train_small.csv', 'r') as csvfile:
     reader = csv.reader(csvfile)
@@ -8,6 +9,7 @@ with open('mnist_train_small.csv', 'r') as csvfile:
 array = np.array(data_list).astype(float)
 # Save the array to a NPZ file
 np.savez('mnist_train_small.npz', array)
+np.save(os.path.join('MNIST_project/data', 'mnist_train_small.npz'), mnist_train_small.npz)
 
 def set_config(c):
     c.input_path = "sample_data/mnist_train_small.npz"
