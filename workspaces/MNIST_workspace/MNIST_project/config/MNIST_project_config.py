@@ -1,18 +1,5 @@
-import csv
-import numpy as np
-import os
-# Read CSV file into a list of rows
-with open('mnist_train_small.csv', 'r') as csvfile:
-    reader = csv.reader(csvfile)
-    data_list = list(reader)
-# Convert list to an array
-array = np.array(data_list).astype(float)
-# Save the array to a NPZ file
-np.savez('mnist_train_small.npz', array)
-np.save(os.path.join('MNIST_project/data', 'mnist_train_small.npz'), mnist_train_small.npz)
-
 def set_config(c):
-    c.input_path = "sample_data/mnist_train_small.npz"
+    c.input_path = "workspaces/MNIST_workspace/data/MNIST_combined.npz"
     c.compression_ratio = 100
     # c.number_of_columns = 24
     # c.latent_space_size = 15
