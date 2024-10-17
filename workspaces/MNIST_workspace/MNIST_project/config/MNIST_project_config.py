@@ -1,5 +1,5 @@
 def set_config(c):
-    c.input_path = "workspaces/MNIST_workspace/data/MNIST_combined.npz"
+    c.input_path = "workspaces/MNIST_workspace/data/mnist_combined.npz"
     c.compression_ratio = 100
     # c.number_of_columns = 24
     # c.latent_space_size = 15
