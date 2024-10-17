@@ -119,10 +119,9 @@ class AE(nn.Module):
     # Released under the Apache License 2.0 found at https://www.apache.org/licenses/LICENSE-2.0.txt
     # Copyright 2021 George Dialektakis
 
-    def __init__(self, n_features, z_dim, *args, **kwargs):
+    def __init__(self.float(), n_features, z_dim, *args, **kwargs):
         super(AE, self).__init__(*args, **kwargs)
 
-        self.float()
 
         self.activations = {}
 
