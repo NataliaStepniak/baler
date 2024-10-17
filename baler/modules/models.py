@@ -122,6 +122,8 @@ class AE(nn.Module):
     def __init__(self, n_features, z_dim, *args, **kwargs):
         super(AE, self).__init__(*args, **kwargs)
 
+        self.float()
+
         self.activations = {}
 
         # encoder
