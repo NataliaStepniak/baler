@@ -139,7 +139,7 @@ class AE(nn.Module):
         self.n_features = n_features
         self.z_dim = z_dim
 
-        self.float()
+        self = self.float()
 
     def encode(self, x):
         h1 = F.leaky_relu(self.en1(x))
