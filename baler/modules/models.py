@@ -726,6 +726,7 @@ class TransformerAE(nn.Module):
 
     def __init__(
         self,
+        n_feature
         in_dim,
         h_dim=256,
         n_heads=1,
