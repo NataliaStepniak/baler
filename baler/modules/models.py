@@ -727,7 +727,7 @@ class TransformerAE(nn.Module):
     def __init__(
         self,
         n_features,
-        in_dim,
+        config.data_dimension,   # config.data_dimension has replaced in_dim
         h_dim=256,
         n_heads=1,
         z_dim=50,   # z_dim is dimension of latent space, replace latent_size variable with z_dim
@@ -738,7 +738,7 @@ class TransformerAE(nn.Module):
         self.transformer_encoder_layer_1 = torch.nn.TransformerEncoderLayer(
             batch_first=True,
             norm_first=True,
-            d_model=in_dim,
+            d_model=config.data_dimension, # config.data_dimension has replaced in_dim
             activation=activation,
             dim_feedforward=h_dim,
             nhead=n_heads,
@@ -810,7 +810,7 @@ class TransformerAE(nn.Module):
         )
 
         self.transformer_decoder_layer_1 = torch.nn.TransformerEncoderLayer(
-            d_model=in_dim,
+            d_model=config.data_dimension, # replaced in_dim with config.data_dimension
             dim_feedforward=h_dim,
             activation=activation,
             nhead=n_heads,
