@@ -730,7 +730,7 @@ class TransformerAE(nn.Module):
         in_dim,
         h_dim=256,
         n_heads=1,
-        latent_size=50,
+        z_dim=50,   # z_dim is dimension of latent space, replace latent_size variable with z_dim
         activation=torch.nn.functional.gelu,
     ):
         super(TransformerAE, self).__init__()
@@ -775,13 +775,13 @@ class TransformerAE(nn.Module):
 
         self.encoder_layer_3 = torch.nn.Sequential(
             torch.nn.LazyBatchNorm1d(),
-            torch.nn.Linear(128, latent_size),
+            torch.nn.Linear(128, z_dim), # changed latent_size to z_dim
             torch.nn.LeakyReLU(),
         )
 
         self.decoder_layer_3 = torch.nn.Sequential(
             torch.nn.LazyBatchNorm1d(),
-            torch.nn.Linear(latent_size, 128),
+            torch.nn.Linear(z_dim, 128), # changed latent_size to z_dim
             torch.nn.LeakyReLU(),
         )
         self.decoder_layer_2 = torch.nn.Sequential(
