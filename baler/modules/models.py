@@ -733,6 +733,8 @@ class TransformerAE(nn.Module):
         latent_size=50,
         activation=torch.nn.functional.gelu,
     ):
+        z_dim = latent_size
+        
         super(TransformerAE, self).__init__()
 
         self.transformer_encoder_layer_1 = torch.nn.TransformerEncoderLayer(
