@@ -54,7 +54,7 @@ def loss_plot(path_to_loss_data, output_path, config):
     plt.ylabel("Loss")
     plt.legend(loc="best")
     plt.savefig(os.path.join(output_path, "plotting", "Loss_plot.pdf"))
-    # plt.show()
+    plt.show()
 
 
 def get_index_to_cut(column_index, cut, array):
