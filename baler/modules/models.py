@@ -727,7 +727,7 @@ class TransformerAE(nn.Module):
     def __init__(
         self,
         n_features,
-        in_dim,
+        in_dim=2,
         h_dim=256,
         n_heads=1,
         z_dim=50,   # z_dim is dimension of latent space, replace latent_size variable with z_dim
