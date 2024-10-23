@@ -414,8 +414,8 @@ def plot_2D(project_path, config):
 
         diff = tile_data - tile_data_decompressed
 
-        max_value = np.amax([np.amax(tile_data), np.amax(tile_data_decompressed)])
-        min_value = np.amin([np.amin(tile_data), np.amin(tile_data_decompressed)])
+        max_value = np.amax([np.amax(tile_data), np.amax(tile_data_decompressed), np.amax(diff)])
+        min_value = np.amin([np.amin(tile_data), np.amin(tile_data_decompressed), np.amin(diff)])
 
         fig, axs = plt.subplots(
             1, 3, figsize=(29.7 * (1 / 2.54), 10 * (1 / 2.54)), sharey=True
