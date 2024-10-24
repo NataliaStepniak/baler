@@ -9,7 +9,7 @@ def set_config(c):
     c.min_delta = 0
     c.lr_scheduler = True
     c.lr_scheduler_patience = 50
-    c.model_name = "TransformerAE"
+    c.model_name = "AE"
     c.model_type = "dense"
     c.custom_norm = True
     c.l1 = True
