@@ -54,7 +54,7 @@ def loss_plot(path_to_loss_data, output_path, config):
     plt.ylabel("Loss")
     plt.legend(loc="best")
     plt.savefig(os.path.join(output_path, "plotting", "Loss_plot.pdf"))
-    plt.show()
+    # plt.show()
 
 
 def get_index_to_cut(column_index, cut, array):
@@ -383,13 +383,14 @@ def plot_2D(project_path, config):
     data = np.load(config.input_path)["data"]
     data_decompressed = np.load(project_path + "/decompressed_output/decompressed.npz")[
         "data"
-    ]
-
+    ][:,:,:].astype(np.float32)
+    #print(data_decompressed.shape)
+    #print(data.shape)
     if config.convert_to_blocks:
         data_decompressed = data_decompressed.reshape(
             data.shape[0], data.shape[1], data.shape[2]
         )
-
+    #print(data_decompressed.shape)
     if data.shape[0] > 1:
         num_tiles = data.shape[0]
     else:
@@ -414,8 +415,8 @@ def plot_2D(project_path, config):
 
         diff = tile_data - tile_data_decompressed
 
-        max_value = np.amax([np.amax(tile_data), np.amax(tile_data_decompressed), np.amax(diff)])
-        min_value = np.amin([np.amin(tile_data), np.amin(tile_data_decompressed), np.amin(diff)])
+        max_value = np.amax([np.amax(tile_data), np.amax(tile_data_decompressed)])
+        min_value = np.amin([np.amin(tile_data), np.amin(tile_data_decompressed)])
 
         fig, axs = plt.subplots(
             1, 3, figsize=(29.7 * (1 / 2.54), 10 * (1 / 2.54)), sharey=True
