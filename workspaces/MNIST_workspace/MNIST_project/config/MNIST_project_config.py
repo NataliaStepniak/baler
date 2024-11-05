@@ -1,15 +1,15 @@
 def set_config(c):
     c.input_path = "workspaces/MNIST_workspace/data/mnist_combined.npz"
-    c.compression_ratio = 100
+    c.compression_ratio = 10
     # c.number_of_columns = 24
     # c.latent_space_size = 15
-    c.epochs = 100
+    c.epochs = 20
     c.early_stopping = False
     c.early_stopping_patience = 100
     c.min_delta = 0
     c.lr_scheduler = True
     c.lr_scheduler_patience = 50
-    c.model_name = "AE"
+    c.model_name = "TransformerAE"
     c.model_type = "dense"
     c.custom_norm = True
     c.l1 = True
