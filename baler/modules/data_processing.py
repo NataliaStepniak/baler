@@ -111,7 +111,7 @@ def load_model(model_object, model_path: str, n_features: int, z_dim: int):
     return model
 
 
-def find_minmax(data):
+def find_minmax(data): # CHANGED TO FIX TRANSFORMER NORMALIZATION
     """Obtains the minimum and maximum values for each column.
 
     Args:
@@ -120,18 +120,28 @@ def find_minmax(data):
     Returns: ndarray: An array of two lists. One of the lists contains the minimum of each column, while the other
     list contains `feature_range = max - min` for each column.
     """
-    data = list(data)
-    true_max_list = np.apply_along_axis(np.max, axis=0, arr=data)
-    true_min_list = np.apply_along_axis(np.min, axis=0, arr=data)
+    #data = list(data)
+    #true_max_list = np.apply_along_axis(np.max, axis=0, arr=data)
+    #true_min_list = np.apply_along_axis(np.min, axis=0, arr=data)
 
     # Computes the range
-    feature_range_list = true_max_list - true_min_list
+    #feature_range_list = true_max_list - true_min_list
 
-    normalization_features = np.array([true_min_list, feature_range_list])
+    #normalization_features = np.array([true_min_list, feature_range_list])
+
+
+
+
+    data = list(data)
+    mean = np.apply_along_axis(np.mean, axis=0, arr=data)
+    variance = np.apply_along_axis(np.var, axis=0, arr=data)
+    normalization_features = np.array([mean, variance])
+
+    
     return normalization_features
 
 
-def normalize(data, custom_norm: bool):
+def normalize(data, custom_norm: bool): # CHANGE TO NORMALIZE USING BATCH NORM
     """This function scales the data to be in the range [0,1], based on the Min Max normalization method. It finds
     the minimum and maximum values of each column and computes the values according to: x_norm = (x - x_min) / (x_max
     - x_min).
@@ -146,11 +156,20 @@ def normalize(data, custom_norm: bool):
     if custom_norm:
         pass
     elif not custom_norm:
-        true_min = np.min(data)
-        true_max = np.max(data)
-        feature_range = true_max - true_min
-        data = [((i - true_min) / feature_range) for i in data]
+        #true_min = np.min(data)
+        #true_max = np.max(data)
+        #feature_range = true_max - true_min
+        #data = [((i - true_min) / feature_range) for i in data]
+        #data = np.array(data)
+
+        # manually calculating mean and variance
+        #mean = (1/length(data)) * np.sum(data)
+        #variance = [(1/length(data)) * np.sum((i - mean)**2) for i in data]
+        mean = np.mean(data)
+        variance = np.var(data)
+        data = [((i - mean) / (np.sqrt(variance))) for i in data]
         data = np.array(data)
+    
     return data
 
 
@@ -169,8 +188,8 @@ def split(data, test_size: float, random_state: int) -> Tuple[ndarray, ndarray]:
     return train_test_split(data, test_size=test_size, random_state=random_state)
 
 
-def renormalize_std(
-    input_data: ndarray, true_min: float, feature_range: float
+def renormalize_std( # CHANGED FOR TRANSFORMER NORMALIZATION
+    input_data: ndarray, variance: float, mean: float
 ) -> ndarray:
     """Computes the un-normalization of normalized arrays. This function is used in combination with
     `renormalize_func` to perform this operation on an entire dataset.
@@ -183,10 +202,11 @@ def renormalize_std(
     Returns:
         ndarray: Un-normalized data array
     """
-    return np.array([((i * feature_range) + true_min) for i in list(input_data)])
+    #return np.array([((i * feature_range) + true_min) for i in list(input_data)])
+    return np.array([((i * (np.sqrt(variance))) + mean) for i in list(input_data)])
 
 
-def renormalize_func(norm_data: ndarray, min_list: List, range_list: List) -> ndarray:
+def renormalize_func(norm_data: ndarray, variance_list: List, mean_list: List) -> ndarray:
     """Un-normalizes an entire dataset. Applies the `renormalize_std`function across an entire dataset.
         `min_list` and `range_list` are obtained from the `normalization_features.npy` file.
 
@@ -198,7 +218,15 @@ def renormalize_func(norm_data: ndarray, min_list: List, range_list: List) -> nd
     Returns:
         ndarray: Array with the un-normalized values.
     """
+    #norm_data = np.array(norm_data)
+    #min_list = np.array(min_list)
+    #range_list = np.array(range_list)
+
+
     norm_data = np.array(norm_data)
-    min_list = np.array(min_list)
-    range_list = np.array(range_list)
-    return norm_data * range_list + min_list
+    variance_list = np.array(variance_list)
+    mean_list = np.array(mean_list)
+
+    
+    #return norm_data * range_list + min_list
+    return (norm_data * (np.sqrt(variance_list))) + mean_list
