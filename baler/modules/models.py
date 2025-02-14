@@ -122,6 +122,7 @@ class AE(nn.Module):
     def __init__(self, n_features, z_dim, *args, **kwargs):
         super(AE, self).__init__(*args, **kwargs)
 
+
         self.activations = {}
 
         # encoder
@@ -137,6 +138,7 @@ class AE(nn.Module):
 
         self.n_features = n_features
         self.z_dim = z_dim
+
         self.float()
 
     def encode(self, x):
@@ -300,7 +302,6 @@ class AE_Dropout_BN(nn.Module):
 
         self.n_features = n_features
         self.z_dim = z_dim
-        self.float()
 
     def encode(self, x):
         out = self.enc_nn(x)
@@ -319,8 +320,8 @@ class Conv_AE(nn.Module):
     def __init__(self, n_features, z_dim, *args, **kwargs):
         super(Conv_AE, self).__init__(*args, **kwargs)
 
-        self.q_z_mid_dim = 2500
-        self.q_z_output_dim = 20736
+        self.q_z_mid_dim = 2000
+        self.q_z_output_dim = 128
         self.conv_op_shape = None
 
         # Encoder
@@ -577,8 +578,8 @@ class Conv_AE_GDN(nn.Module):
     def __init__(self, n_features, z_dim, *args, **kwargs):
         super(Conv_AE_GDN, self).__init__(*args, **kwargs)
 
-        self.q_z_mid_dim = 2500
-        self.q_z_output_dim = 20736
+        self.q_z_mid_dim = 2000
+        self.q_z_output_dim = 128
         self.conv_op_shape = None
 
         # Encoder
@@ -715,6 +716,7 @@ class PJ_Conv_AE(nn.Module):
     def set_final_layer_dims(self, conv_op_shape):
         self.conv_op_shape = conv_op_shape
 
+
 class TransformerAE(nn.Module):
     """Autoencoder mixed with the Transformer Encoder layer"""
 
@@ -723,7 +725,7 @@ class TransformerAE(nn.Module):
         in_dim,
         h_dim=256,
         z_dim=128,  # Add z_dim here if needed
-    n_heads=1,
+        n_heads=1,
         latent_size=50,
         activation=torch.nn.functional.gelu,
         n_features=None
@@ -788,7 +790,9 @@ class TransformerAE(nn.Module):
             torch.nn.LeakyReLU(),
         )
         self.decoder_layer_2 = torch.nn.Sequential(
-            torch.nn.LazyBatchNorm1d(), torch.nn.Linear(128, 256), torch.nn.LeakyReLU()
+            torch.nn.LazyBatchNorm1d(), 
+            torch.nn.Linear(128, 256), 
+            torch.nn.LeakyReLU()
         )
         self.decoder_layer_1 = torch.nn.Sequential(
             torch.nn.LazyBatchNorm1d(),
@@ -813,6 +817,7 @@ class TransformerAE(nn.Module):
         )
 
         self.transformer_decoder_layer_1 = torch.nn.TransformerEncoderLayer(
+            batch_first=True, # added this line in to see if fixes normalization issue, remove if doesn't fix it
             d_model=in_dim,
             dim_feedforward=h_dim,
             activation=activation,
