@@ -30,6 +30,8 @@ from sklearn.model_selection import train_test_split
 
 from ..modules import training, plotting, data_processing, diagnostics
 
+from sklearn.preprocessing import MinMaxScaler
+
 
 def get_arguments():
     """Determines the arguments one is able to apply in the command line when running Baler. Use `--help` to see what
@@ -730,9 +732,16 @@ def decompress(
         decompressed = decompressed.reshape(
             (len(decompressed), original_shape[1], original_shape[2])
         )
-    #print(decompressed.shape)
+    print(decompressed.shape)
+    print(decompressed)
     
-    decompressed = np.clip(decompressed, a_min=0, a_max=255).astype(np.uint8)
+    #decompressed = np.clip(decompressed, a_min=0, a_max=255).astype(np.uint8)
+    scaler = MinMaxScaler((0,255)) # extra added to see if MinMaxScalar fixes transformer issue
+    decompressed[1] = scaler.fit_transform(decompressed[1])
+    decompressed[2] = scaler.fit_transform(decompressed[2])
+
+    print('decompressed data =', decompressed)
+    
     return decompressed, names, normalization_features
 
 
